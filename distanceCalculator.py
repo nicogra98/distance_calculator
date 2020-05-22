@@ -30,22 +30,36 @@ def harvesine(set1, set2):
   return rad * c 
 
 
-
 if __name__ == "__main__":
   geolocator = Nominatim(user_agent = "DistanceCalculator")
+  km = True
 
-  name_location1 = input("Please provide the name or coordinates of the first point you want to calculate the distance: ")
-  name_location2 = input("Please provide the name or coordinates of the second point you want to calculate the distance: ")
+  while True:
 
-  location1 = geolocator.geocode(name_location1)
-  location2 = geolocator.geocode(name_location2)
+    name_location1 = input("Please provide the name or coordinates of the first point you want to calculate the distance: ")
+    name_location2 = input("Please provide the name or coordinates of the second point you want to calculate the distance: ")
 
-  coordinates1 = (location1.latitude, location1.longitude)
-  coordinates2 = (location2.latitude, location2.longitude)
+    if input("Do you want the result in miles or kilometers?(k/m)").lower()[0] == "k":
+      km = True
+    else:
+      km = False
 
-  print(coordinates1)
-  print(coordinates2)
+    location1 = geolocator.geocode(name_location1)
+    location2 = geolocator.geocode(name_location2)
 
-  result = harvesine(coordinates1, coordinates2)
+    coordinates1 = (location1.latitude, location1.longitude)
+    coordinates2 = (location2.latitude, location2.longitude)
 
-  print("The distance between {} and {} is: {} Km".format(name_location1, name_location2, result))
+    result = harvesine(coordinates1, coordinates2)
+
+    if km:
+      print("The distance between {} and {} is: {} Km".format(name_location1, name_location2, result))
+    else:
+      result = result / 1.609
+      print("The distance between {} and {} is: {} miles".format(name_location1, name_location2, result))
+
+    if input("Do you want to calculate more distances (y/n): ").lower()[0] == "y":
+      continue
+    else:
+      print("Thank you!")
+      break
